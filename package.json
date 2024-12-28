@@ -1,0 +1,19 @@
+{
+  "name": "game24-solver",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/game24.js",
+  "scripts": {
+    "test": "node src/test.js",
+    "start": "node src/game24.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@langchain/core": "^0.1.48",
+    "@langchain/openai": "^0.0.14",
+    "dotenv": "^16.4.7"
+  }
+}
