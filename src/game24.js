@@ -43,19 +43,18 @@ class Game24Solver {
       }
       visited.add(numbersKey);
 
-      console.log(`\n当前处理数字：${current.numbers.join(" ")}`);
+      console.log(`\n当前的想法：${current.numbers.join(" ")}`);
       if (current.steps.length > 0) {
         console.log(`已执行步骤：${current.steps.join(" -> ")}`);
       }
 
       // 如果只剩2-3个数字，评估是否可能达到24
       if (current.numbers.length <= 3) {
-        console.log("进行可行性评估...");
+        console.log("对想法进行可行性评估...");
         // 检查缓存
         const cachedResult = this.cache.get(current.numbers);
         let reason;
         if (cachedResult) {
-          console.log("使用缓存的评估结果");
           reason = cachedResult;
         } else {
           const evaluate = await evaluatePrompt.format({
@@ -67,7 +66,7 @@ class Game24Solver {
           this.cache.set(current.numbers, reason);
         }
 
-        console.log(`评估原因：${reason}`);
+        console.log(`评估过程：${reason}`);
 
         if (reason.toUpperCase().includes("BINGO")) {
           console.log("😄 找到确定解法！");
@@ -86,13 +85,13 @@ class Game24Solver {
         }
       }
 
-      console.log("生成下一步可能的操作...");
+      console.log("寻找下一步可能的想法...");
       const propose = await proposePrompt.format({
         input: current.numbers.join(" "),
       });
       const proposals = await this.llm.invoke(propose);
       const nextSteps = this.parseProposals(proposals.content);
-      console.log(`获得 ${nextSteps.length} 个可能的操作：`);
+      console.log(`提出 ${nextSteps.length} 个可能的想法：`);
       nextSteps.forEach((step, index) => {
         console.log(
           `  ${index + 1}. ${step.operation} = ${

@@ -19,16 +19,12 @@ export class EvaluationCache {
   get(numbers) {
     const key = this.generateKey(numbers);
     const result = this.cache.get(key);
-    if (result) {
-      console.log(`缓存命中: ${numbers.join(" ")} -> ${key}`);
-    }
     return result;
   }
 
   // 设置缓存结果
   set(numbers, result) {
     const key = this.generateKey(numbers);
-    console.log(`添加缓存: ${numbers.join(" ")} -> ${key}`);
     this.cache.set(key, result);
     this.dirty = true;
   }
@@ -39,13 +35,6 @@ export class EvaluationCache {
       const data = await fs.readFile(this.cacheFile, "utf-8");
       const entries = JSON.parse(data);
       this.cache = new Map(entries);
-      console.log(
-        `\n已从 ${this.cacheFile} 加载 ${this.cache.size} 条缓存记录：`
-      );
-      for (const [key, value] of this.cache.entries()) {
-        console.log(`  ${key}: ${value.split("\n")[0]}`);
-      }
-      console.log();
     } catch (error) {
       if (error.code === "ENOENT") {
         console.log("\n缓存文件不存在，将创建新的缓存\n");
